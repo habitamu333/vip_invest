@@ -45,9 +45,6 @@ INSTALLED_APPS = [
     'vip',
     'referral',
     'user_profile',
-
-    # third party
-    'django_crontab',
 ]
 AUTH_USER_MODEL = 'accounts.User'
 
