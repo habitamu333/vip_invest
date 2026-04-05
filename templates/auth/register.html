@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+<div class="col-md-8 col-lg-6">  <!-- ✅ wider like login -->
+
+<div class="register-box p-5">
+
+    <h3 class="mb-4 text-center">Create Account</h3>
+
+    <form method="POST" id="register-form">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label>Phone Number</label>
+        <input type="text" name="phone" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+
+<div class="mb-3">
+    <label>Referral Code (optional)</label>
+    <input type="text"
+           name="referral_code"
+           value="{{ referral_code }}"
+           class="form-control"
+           placeholder="Invitation code">
+</div>
+      <div class="text-center mt-3">
+      <button type="submit" class="btn btn-success px-3 py-1">
+        Register
+      </button>
+      </div>
+    </form>
+
+    <br>
+
+    <p>
+      Already have an account?
+      <a href="/login/">Login</a>
+    </p>
+
+  </div>
+</div>
+<style>
+body {
+    background: #eef2f7;  /* ✅ modern light background */
+    font-family: 'Inter', sans-serif;
+}
+
+.register-box {
+    background: linear-gradient(145deg, #22c55e, #10b981); /* ✅ modern gradient */
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.tab {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 30px;
+    background: transparent;
+    color: #e5e7eb;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tab.active {
+    background: white;
+    color: #10b981;
+    font-weight: bold;
+}
+
+input.form-control {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    height: 45px;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+input.form-control:focus {
+    outline: none;
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 0 8px rgba(255,255,255,0.3);
+}
+.btn-success {
+    background: #34d399;
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-success:hover {
+    background: #22c55e;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- HERO -->
+<section class="hero-section text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <!-- LEFT: TEXT -->
+            <div class="col-md-6 text-center text-md-start">
+                <h1 class="display-3 fw-bold">
+                    Smart VIP Investment Platform
+                </h1>
+
+                <p class="lead">
+                    Upgrade your VIP level and earn daily passive income.
+                </p>
+
+                <a href="{% url 'register' %}" class="btn btn-warning btn-lg mt-3">
+                    Start making money
+                </a>
+            </div>
+
+            <!-- RIGHT: GIF -->            
+             <div class="col-md-6 text-center">
+               <div class="hero-gif">
+                 <img src="{% static 'images/money_counting.gif' %}" alt="Investment Animation">
+                </div>
+             </div>
+        </div>
+    </div>
+    </section>
+    <!-- LIVE TICKER -->
+
+<div class="ticker">
+
+<div class="ticker-move">
+
+<span>0701****16 deposited 5000 Birr</span>
+<span>0912****86 deposited 15000 Birr</span>
+<span>0916****29 deposited 9000 Birr</span>
+<span>0923****82 deposited 15000 Birr</span>
+<span>0911****18 deposited 12000 Birr</span>
+<span>0915****22 deposited 7000 Birr</span>
+<span>0913****12 deposited 7000 Birr</span>
+<span>0702****26 deposited 3500 Birr</span>
+<span>0931****86 deposited 3500 Birr</span>
+<span>0754****81 deposited 9000 Birr</span>
+<span>0922****99 deposited 3500 Birr</span>
+<span>0911****92 deposited 3500 Birr</span>
+<span>0913****21 deposited 15000 Birr</span>
+<span>0911****92 deposited 3500 Birr</span>
+<span>0928****26 deposited 12000 Birr</span>
+<span>0966****87 deposited 5000 Birr</span>
+
+</div>
+
+</div>
+<section class="stats py-5">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-md-3">
+                <div class="glass-card p-4">
+                    <h2 class="counter" data-target="2450000">12,000,000</h2>
+                    <p>Total Invested</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card p-4">
+                    <h2 class="counter" data-target="12350">1080</h2>
+                    <p>Total Members</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card p-4">
+                    <h2 class="counter" data-target="1340000">11,375,110</h2>
+                    <p>Total Withdrawn</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card p-4">
+                    <h2 class="counter" data-target="6">1 year</h2>
+                    <p>Years Online</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- VIP PLANS -->
+
+<!-- VIP Plans Section -->
+<!-- VIP Plans Premium Section -->
+<section>
+<div class="container my-5" >
+    <h2 class="text-center mb-5 vip-title">Our VIP Plans</h2>
+    <div class="row g-4">
+        {% for plan in vip_plans %}
+        <div class="col-md-4">
+            <div class="card vip-card position-relative text-center p-4 h-100 shadow-sm">
+                {% if plan.level == 3 %}
+                <span class="badge-best">Most Popular</span>
+                {% endif %}
+
+                <div class="vip-icon mb-3">
+                    <i class="bi bi-star-fill"></i>
+                </div>
+
+                <h4 class="fw-bold">{{ plan.name }}</h4>
+                <h3 class="my-2">{{ plan.price }} Birr</h3>
+                <p class="mb-1"><strong>{{ plan.daily_profit_percent }}%</strong> Daily Profit</p>
+                <p class="mb-3">Duration: {{ plan.duration_days }} days</p>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'vip:buy_or_upgrade_vip' plan.id %}" class="btn btn-gradient">Activate VIP</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-gradient"> Login to Activate</a>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No VIP plans available at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+</section>
+<style>
+    /* VIP card gradient + hover */
+    .vip-card {
+        border-radius: 15px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        background: #fff;
+    }
+    .vip-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+    }
+    .vip-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        border-radius: 50%;
+        color: #fff;
+        font-size: 28px;
+    }
+    .btn-gradient {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        transition: transform 0.3s, background 0.3s;
+    }
+    .btn-gradient:hover {
+        background: linear-gradient(135deg, #2575fc, #6a11cb);
+        transform: scale(1.05);
+        color: #fff;
+    }
+    .badge-best {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #ffbc00;
+        color: #333;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        border-radius: 10px;
+    }
+</style>
+<!-- REFERRAL -->
+
+<section class="referral text-white">
+     <div class="container text-center">
+        
+        <div class="row align-items-center">
+            
+            <!-- LEFT: Image -->
+            <div class="col-md-4 text-center">
+                <div class="hero-gif">
+                    <img src="{% static 'images/referal.png' %}" 
+                         alt="Investment Animation" 
+                         class="img-fluid">
+                </div>
+            </div>
+
+            <!-- RIGHT: Content -->
+            <div class="col-md-8 text-md-start text-center">
+                <h2>Earn With Referral Program</h2>
+
+                <p>
+                    Invite friends and earn commissions from their investments.
+                </p>
+
+                <a href="{% url 'register' %}" class="btn btn-warning">
+                    Join Now
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<section class="testimonials py-5">
+
+<div class="container">
+
+<h2 class="text-center mb-5">
+Trusted by Investors
+</h2>
+
+<div class="row">
+
+<div class="col-md-4">
+
+<div class="card p-4 shadow">
+
+<p>"ጥሩ እና አትራፊ ፕላትፎርም ነው።"</p>
+
+<strong>ያሬድ</strong>
+
+</div>
+
+</div>
+
+
+<div class="col-md-4">
+
+<div class="card p-4 shadow">
+
+<p>"ክፍያ በወቅቱ ቶሎ መከፈሉ ደስ ይላል"</p>
+
+<strong>ሚኪያስ</strong>
+
+</div>
+
+</div>
+
+
+<div class="col-md-4">
+
+<div class="card p-4 shadow">
+
+<p>"ለአጠቃቀም ቀላል መሆኑ ተመችቶኛል"</p>
+
+<strong>አለማየሁ</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CTA -->
+
+<section class="cta text-center text-white">
+
+<div class="container">
+
+<h2>Start Your Investment Journey Today</h2>
+
+<a href="{% url 'register' %}" class="btn btn-light btn-lg mt-3">
+Create Account
+</a>
+
+</div>
+
+</section>
+{% endblock %}

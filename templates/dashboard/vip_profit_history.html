@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">VIP Profit History</h2>
+
+<div class="row">
+    <div class="col-12">
+        {% if profits %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>VIP Plan</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for profit in profits %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ profit.user_vip.vip_plan.name }}</td>
+                        <td>${{ profit.amount }}</td>
+                        <td>{{ profit.date|date:"Y-m-d" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You have no VIP profit history yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

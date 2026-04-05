@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+<h3 class="fw-bold mb-4 text-center">Daily Tasks</h3>
+
+<!-- Progress -->
+<div class="card p-3 mb-4 shadow-sm">
+    <h6>Progress</h6>
+    <div class="progress" style="height: 25px;">
+        <div class="progress-bar bg-success"
+             style="width: {{ progress }}%">
+            {{ completed_count }} / {{ total_limit }}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+{% for task in tasks %}
+<div class="col-md-4 mb-3">
+
+<div class="card p-3 shadow-sm text-center
+{% if task.left <= 0 %}bg-light{% endif %}">
+
+<h5>{{ task.name }}</h5>
+
+<p class="small text-muted">{{ task.description }}</p>
+
+<p class="text-success fw-bold">${{ task.reward }}</p>
+
+<p>{{ task.done }} / {{ task.daily_limit }}</p>
+
+{% if task.left <= 0 %}
+    <button class="btn btn-secondary w-100" disabled>
+        ✅ Completed
+    </button>
+{% else %}
+
+    <!-- JOB LINK -->
+    <a href="{{ task.link }}" target="_blank"
+       class="btn btn-primary w-100 mb-2">
+        🔗 Go to Task
+    </a>
+
+    <!-- PROOF UPLOAD -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="task_id" value="{{ task.id }}">
+
+        <input type="file" name="proof" class="form-control mb-2" required>
+
+        <button class="btn btn-success w-100">
+            Submit Proof & Earn
+        </button>
+    </form>
+
+{% endif %}
+
+</div>
+</div>
+{% endfor %}
+
+</div>
+</div>
+
+{% endblock %}

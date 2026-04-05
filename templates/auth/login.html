@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="register-box p-5">
+    <h3 class="mb-4 text-center">Login</h3>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label>Phone Number</label>
+        <input type="text" name="phone" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100">
+        Login
+      </button>
+    </form>
+
+    <br>
+
+    <p>
+      Don't have an account?
+      <a href="/register/">Register</a>
+    </p>
+    </div>
+  </div>
+</div>
+<script>
+function togglePassword(id) {
+    const input = document.getElementById(id);
+    input.type = input.type === "password" ? "text" : "password";
+}
+</script>
+
+<!-- STYLE -->
+<style>
+body {
+    background: #eef2f7;  /* Light modern page background */
+    font-family: 'Inter', sans-serif;
+}
+
+.register-box {
+    background: linear-gradient(145deg, #22c55e, #10b981); /* modern green gradient */
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+input.form-control {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    height: 45px;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+input.form-control:focus {
+    outline: none;
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 0 8px rgba(255,255,255,0.3);
+}
+
+.eye {
+    position: absolute;
+    right: 15px;
+    top: 38px;
+    cursor: pointer;
+}
+
+.btn-success {
+    background: #34d399;
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-success:hover {
+    background: #22c55e;
+    color: white;
+}
+</style>
+{% endblock %}

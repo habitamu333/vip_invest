@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+<h3>Task Earnings History</h3>
+
+<table class="table table-striped mt-3">
+
+<tr>
+<th>Task</th>
+<th>Reward</th>
+<th>Date</th>
+</tr>
+
+{% for h in history %}
+
+<tr>
+<td>{{ h.task.name }}</td>
+<td>${{ h.reward }}</td>
+<td>{{ h.completed_at }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

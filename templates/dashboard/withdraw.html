@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Withdraw</h2>
+
+<div class="row justify-content-center">
+
+<div class="col-md-6">
+
+<div class="card">
+<div class="card-body">
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="mb-3">
+<label>Withdrawal Amount</label>
+<input type="number" name="amount" class="form-control" required required placeholder="enter amount">
+</div>
+
+<div class="mb-3">
+<label>Telebirr Acount</label>
+<input type="text" name="wallet_address" class="form-control" required required placeholder="enter your telebir account">
+</div>
+<div class="mb-3">
+<label>Your Name</label>
+<input type="text" name="person_name" class="form-control" required placeholder="enter your name">
+</div>
+<button class="btn btn-warning w-100">
+Request Withdrawal
+</button>
+
+</form>
+
+</div>
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

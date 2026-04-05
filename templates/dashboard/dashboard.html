@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    /* Card hover effect */
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+    }
+
+    .progress-bar {
+        transition: width 1.5s ease-in-out;
+    }
+
+    .btn-primary:hover, .btn-success:hover, .btn-warning:hover {
+        opacity: 0.9;
+    }
+
+    .member-item {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .vip-badge {
+        background: #00c2b8;
+        font-size: 12px;
+        padding: 5px 10px;
+        border-radius: 12px;
+    }
+
+    .member-wrapper {
+        max-width: 360px;   /* controls width */
+        margin: 0 auto;     /* center it */
+    }
+
+    .member-item {
+        font-size: 14px;    /* slightly smaller text */
+        border-radius: 8px;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(6px);
+        transition: all 0.3s ease;
+    }
+
+    .member-scroll {
+        display: flex;
+        flex-direction: column;
+        animation: scrollUp 10s linear infinite;
+    }
+
+    @keyframes scrollUp {
+        0% {
+            transform: translateY(100%);
+        }
+        100% {
+            transform: translateY(-100%);
+        }
+    }
+
+    /* Pause on hover (nice UX) */
+    .member-wrapper:hover .member-scroll {
+        animation-play-state: paused;
+    }
+</style>
+
+<div class="container mt-4">
+
+    <h3 class="mb-4 fw-bold">Dashboard</h3>
+
+    <!-- Top Cards -->
+    <div class="row g-3">
+
+        <!-- Balance -->
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center py-2 px-2">
+                <h6 class="text-muted small mb-1">Balance</h6>
+                <h5 class="text-success mb-0">
+                    <i class="bi bi-wallet2"></i> {{ balance }} Birr
+                </h5>
+            </div>
+        </div>
+
+        <!-- VIP -->
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center py-2 px-2">
+                <h6 class="text-muted small mb-1">VIP Level</h6>
+                <h5 class="text-primary mb-1">
+                    {% if vip_level == 1 %}🥉 Bronze
+                    {% elif vip_level == 2 %}🥈 Silver 
+                    {% elif vip_level == 3 %}⭐ Gold
+                    {% elif vip_level == 4 %}💎 Platinum
+                    {% elif vip_level == 5 %}🟢 Emerald
+                    {% elif vip_level == 6 %}👑Crown Diamond 
+                    {% else %}None{% endif %}
+                </h5>
+
+                {% if current_vip %}
+                <div>
+                    <div class="progress-bar 
+                        {% if vip_level == 1 %}bg-secondary
+                        {% elif vip_level == 2 %}bg-warning
+                        {% elif vip_level == 3 %}bg-primary
+                        {% endif %}"                   
+                        aria-valuenow="{{ days_left }}"
+                        aria-valuemin="0"
+                        aria-valuemax="{{ current_vip.vip_plan.duration_days }}">
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Referrals -->
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center py-2 px-2">
+                <h6 class="text-muted small mb-1">Total Referrals</h6>
+                <h5 class="mb-0">{{ total_referrals }}</h5>
+            </div>
+        </div>
+
+        <!-- Earnings -->
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center py-2 px-2">
+                <h6 class="text-muted small mb-1">Referral Earnings</h6>
+                <h5 class="text-warning mb-0">{{ referral_earnings }} Birr</h5>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Referral Section -->
+    <div class="card referral-card border-0 shadow mt-4">
+        <div class="card-body py-4">
+
+            <h5 class="text-center mb-4 fw-bold">🎁 Invite & Earn</h5>
+
+            <div class="row g-3">
+
+                <!-- Referral Code -->
+                <div class="col-md-4">
+                    <label class="form-label text-light small">Referral Code</label>
+                    <div class="input-group custom-input">
+                        <input type="text" id="refCode" class="form-control" value="{{ referral_code }}" readonly>
+                        <button class="btn copy-btn" onclick="copyText('refCode', this)">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Referral Link -->
+                <div class="col-md-6">
+                    <label class="form-label text-light small">Referral Link</label>
+                    <div class="input-group custom-input">
+                        <input type="text" id="refLink" class="form-control" value="{{ referral_link }}" readonly>
+                        <button class="btn copy-btn" onclick="copyText('refLink', this)">Copy</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <a href="{% url 'vip:daily_tasks' %}" class="btn btn-primary px-4">Daily Tasks</a>
+        <a href="{% url 'wallet:deposit' %}" class="btn btn-primary px-4">Deposit</a>
+        <a href="{% url 'wallet:withdraw' %}" class="btn btn-warning px-4">Withdraw</a>
+        <a href="{% url 'vip:vip_view' %}" class="btn btn-success px-4">Upgrade VIP</a>
+    </div>
+
+    <!-- Member list -->
+    <h5 class="text-white mb-3 mt-4">Member list</h5>
+
+<div class="member-wrapper overflow-hidden">
+    <div class="member-scroll" id="memberList">
+
+        {% for m in members %}
+        <div class="member-item d-flex justify-content-between align-items-center mb-2 px-3 py-2">
+            
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge vip-badge">
+                    VIP{{ m.from_user.vip_level }}
+                </span>
+
+                <span class="text-light">
+                    {{ m.from_user.profile.phone|slice:":4" }}******
+                </span>
+            </div>
+
+            <div class="text-white fw-bold">
+                +${{ m.amount }}
+            </div>
+
+        </div>
+
+        {% empty %}
+        <p class="text-center text-light">No members yet</p>
+        {% endfor %}
+
+    </div>
+</div>
+
+</div>
+
+<!-- Animate progress bar -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const progressBar = document.querySelector('.progress-bar');
+    if(progressBar){
+        const totalDays = parseInt(progressBar.getAttribute('aria-valuemax'));
+        const daysLeft = parseInt(progressBar.getAttribute('aria-valuenow'));
+        const percent = Math.round((daysLeft / totalDays) * 100);
+        progressBar.style.width = percent + '%';
+    }
+});
+</script>
+
+<script>
+function randomItem(arr) { 
+    return arr[Math.floor(Math.random() * arr.length)]; 
+}
+
+let prefixes = ["091","092","093","094","095","096","097","098"];
+
+function generatePhone() {
+    let prefix = randomItem(prefixes);
+    let num = Math.floor(1000000 + Math.random() * 9000000);
+    return prefix + num.toString().slice(0,1) + "******";
+}
+
+function generateVIP() {
+    return randomItem(["VIP1","VIP2","VIP3","VIP4","VIP5","VIP6"]);
+}
+
+function generateAmount() {
+    let base = Math.random();
+    if(base < 0.6) return (Math.random()*200 + 20).toFixed(2);
+    if(base < 0.9) return (Math.random()*2000 + 200).toFixed(2);
+    return (Math.random()*10000 + 1000).toFixed(2);
+}
+
+function addFakeMember() {
+    let container = document.getElementById("memberList");
+    if (!container) return;
+
+    let item = document.createElement("div");
+    item.className = "member-item d-flex justify-content-between align-items-center mb-2 px-3 py-2";
+
+    item.innerHTML = `
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge vip-badge">${generateVIP()}</span>
+            <span class="text-light">${generatePhone()}</span>
+        </div>
+        <div class="text-white fw-bold">+${generateAmount()} Birr</div>
+    `;
+
+    container.appendChild(item);
+
+    const MAX_MEMBERS = 10;
+    while(container.children.length > MAX_MEMBERS) {
+        container.removeChild(container.firstChild);
+    }
+}
+
+// 🔥 IMPORTANT PART (THIS FIXES YOUR ISSUE)
+document.addEventListener("DOMContentLoaded", function () {
+    let container = document.getElementById("memberList");
+
+    // count REAL members already rendered by Django
+    let realCount = container.querySelectorAll(".member-item").length;
+
+    let MAX_MEMBERS = 10;
+
+    // ✅ Fill missing slots instantly
+    for (let i = realCount; i < MAX_MEMBERS; i++) {
+        addFakeMember();
+    }
+
+    // ✅ Then simulate live activity
+    setInterval(addFakeMember, 4000);
+});
+</script>
+<!-- Copy Button -->
+<script>
+function copyText(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const temp = document.createElement("textarea");
+    temp.value = input.value;
+    document.body.appendChild(temp);
+    temp.select();
+    temp.setSelectionRange(0, 99999);
+    try { document.execCommand("copy"); btn.innerText="Copied!"; }
+    catch(err){ alert("Copy failed. Please copy manually."); }
+    document.body.removeChild(temp);
+    setTimeout(()=>{ btn.innerText="Copy"; }, 2000);
+}
+</script>
+
+{% endblock %}
