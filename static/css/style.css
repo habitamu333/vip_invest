@@ -2,6 +2,7 @@ body{
 background: linear-gradient(180deg, #020617, #0f172a);
 color:white;
 font-family:system-ui;
+overflow-x: hidden;
 }
 
 /* HERO */
