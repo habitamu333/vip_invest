@@ -276,6 +276,8 @@ padding:100px 0;
     .navbar .btn {
         font-size: 12px;
         padding: 4px 8px;
+        width: 100%;
+        text-align: left;
     }
 
     .navbar-brand {
