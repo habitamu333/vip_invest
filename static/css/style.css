@@ -272,3 +272,18 @@ padding:100px 0;
 .copy-btn:hover {
     opacity: 0.85;
 }
+@media (max-width: 576px) {
+    .navbar .btn {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
+    .navbar-brand {
+        font-size: 16px;
+    }
+}
+@media (max-width: 768px) {
+    .gradient-footer {
+        text-align: center;
+    }
+}
