@@ -81,7 +81,7 @@
 
 <body>
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark flex-wrap bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container py-2">
         <a class="navbar-brand fw-bold" href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'home' %}{% endif %}">
             Medrok Invest
