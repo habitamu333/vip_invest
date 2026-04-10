@@ -3,6 +3,25 @@
 {% block content %}
 <div class="container my-5">
     <h2 class="mb-4">Deposit Funds</h2>
+    <div class="d-flex justify-content-center mb-3">
+    <div style="max-width:260px; width:100%;">
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center p-2" style="background:#e6f4ea; border-radius:8px;">
+                
+                <small class="fw-bold d-block">📱 ይህንን ቴሌብር አካውንት ይጠቀሙ</small>
+                
+                <div id="telebirrNumber" class="text-primary fw-bold" style="font-size:16px;">
+                    0990854851
+                </div>
+
+                <button onclick="copyNumber(event)" class="btn btn-sm btn-outline-primary mt-1 py-0 px-2">
+                    Copy
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
     <div class="row">
         <!-- Deposit Form -->
         <div class="col-md-6">
@@ -69,4 +88,22 @@
         </div>
     </div>
 </div>
+<script>
+function copyNumber() {
+    const text = document.getElementById("telebirrNumber").innerText;
+    navigator.clipboard.writeText(text);
+
+    // Change button text (better UX)
+    const btn = event.target;
+    btn.innerText = "Copied!";
+    btn.classList.remove("btn-outline-primary");
+    btn.classList.add("btn-success");
+
+    setTimeout(() => {
+        btn.innerText = "Copy Number";
+        btn.classList.remove("btn-success");
+        btn.classList.add("btn-outline-primary");
+    }, 2000);
+}
+</script>
 {% endblock %}
