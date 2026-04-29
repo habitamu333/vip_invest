@@ -3,13 +3,7 @@ from decimal import Decimal
 REFERRAL_LEVELS = {
     1: Decimal("0.10"),
     2: Decimal("0.05"),
-    3: Decimal("0.03"),
-    4: Decimal("0.02"),
-    5: Decimal("0.01"),
-    6: Decimal("0.01"),
-    7: Decimal("0.005"),
-    8: Decimal("0.005"),
-    9: Decimal("0.005"),
+    3: Decimal("0.01"),
 }
 
 def give_referral_commission(user, amount):
